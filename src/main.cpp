@@ -1,7 +1,11 @@
-#include <iostream>
-#include <cstdio>
+// Licznik czestotliwosci
 
-int main(){
+#include <cstdio>
+#include <iostream>
+
+
+
+int main() {
 
   printf("Hello world\n");
 
