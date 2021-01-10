@@ -2,12 +2,15 @@ cmake_minimum_required(VERSION 3.13)
 
 message("________ SETUP ________")
 
+set(CXX_STANDARD 17)
+
 project(licznik VERSION 1.0.0)
 include_directories(
   src/
   inc/
   lib/Csv
   lib/Visualizer
+  lib/ppm
   /usr/include
 )
 
@@ -29,9 +32,18 @@ add_library(
   lib/Visualizer/BarChart.cpp
 )
 
+add_library(
+  ppm STATIC
+  lib/ppm/ppm.cpp
+  lib/ppm/ppm_parser.cpp
+  lib/ppm/obraz.cpp
+  lib/ppm/helpers.cpp
+)
+
 link_libraries(
   Csv
   Visualizer
+  ppm
 )
 
 add_executable(licznik src/main.cpp)
