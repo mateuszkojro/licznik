@@ -19,20 +19,42 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 arch=native")
 #add_compile_definitions(DEBUG)
 
 add_library(
-  Csv SHARED
+  Csv STATIC
   lib/Csv/Csv.cpp
 )
 
 add_library(
-  Visualizer SHARED
+  Visualizer STATIC
   lib/Visualizer/Visualizer.cpp
+  lib/Visualizer/BarChart.cpp
+)
+
+link_libraries(
+  Csv
+  Visualizer
 )
 
 add_executable(licznik src/main.cpp)
 
+target_link_libraries(
+  Csv
+  Visualizer
+)
+
+add_executable(
+  test_all
+  test/test_main.cpp
+  test/test_csv.cpp
+)
+
+
+
+
 set(CMAKE_CXX_STANDARD 17)
 
 add_test(NAME licznik COMMAND licznik)
+add_test(NAME test_all COMMAND test_all)
+
 target_link_libraries(
   Csv
   Visualizer
