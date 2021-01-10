@@ -1,5 +1,6 @@
 #include "Csv.h"
 #include <cstddef>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -46,11 +47,19 @@ void Csv::read_csv(const std::string &path) {
   file.open(path, std::ios::in);
 
   std::string value;
+  int i = 0;
   while (file.good()) {
     // getline przyjmuje ',' jako separator kolejnych pol
     getline(file, value, config_.separator);
-    std::clog <<"reading: " <<  value << "\n";
+    std::clog << "reading: " << value << "\n";
     data_.push_back(value);
+    bool is_last_element_on_line = i % config_.number_of_columns;
+    if (is_last_element_on_line) {
+      char trash;
+      file >> trash;
+      i = 0;
+    }
+    i++;
   }
 }
 
@@ -62,3 +71,9 @@ std::string &Csv::operator()(unsigned row, unsigned column) {
 }
 
 std::vector<std::string> Csv::get_data() { return data_; }
+
+unsigned Csv::number_of_columns() { return config_.number_of_columns; }
+
+unsigned Csv::number_of_rows() {
+  return (unsigned)data_.size() / (unsigned)config_.number_of_columns;
+}

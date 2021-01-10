@@ -9,6 +9,7 @@
 // has_titles
 // has_quotes
 
+//@TODO zajac sie headerami 
 struct Config {
   char separator = ',';
   bool has_headers = false;
@@ -31,6 +32,9 @@ public:
   //@FIXME co_jezeli_nie_ma_pliku
   void read_csv(const std::string &);
   void export_csv(const std::string &);
+
+  unsigned number_of_columns();
+  unsigned number_of_rows();
 
   std::vector<std::string> get_data();
 
