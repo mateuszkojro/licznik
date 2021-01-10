@@ -22,12 +22,13 @@ class Csv {
 public:
   Csv() = delete;
   //@TODO konstruktor from file? Csv()
-  Csv(std::vector<std::string>);
+  Csv(std::vector<std::string>, Config);
 
   //@TODO moze byc ciezko z wzgledu na rozny zapis roznych obiektow ale
   // moglibymsy brac func interpretujaca string do danego obiektu that would be
   // kinda cool labo wgl bez tego i nie towrzymy nigdy csv z pliku albo zwracamy
   // pary string - izi i ma sens
+  //@FIXME co_jezeli_nie_ma_pliku
   void read_csv(const std::string &);
   void export_csv(const std::string &);
 
