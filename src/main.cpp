@@ -1,6 +1,7 @@
 // Licznik czestotliwosci
 
 #include "Csv.h"
+#include "Visualizer.h"
 #include <cstdio>
 #include <iostream>
 
@@ -8,7 +9,7 @@
 //@TODO --help
 //@TODO simple_cli_interface
 
-int main(int argc, char **argv) {
+int main(int , char **) {
 
   printf("Hello world\n");
 
