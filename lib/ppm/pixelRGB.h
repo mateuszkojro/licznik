@@ -4,7 +4,7 @@
 #include "pixel.h"
 
 // TODO: wyjebac for production
-typedef char color;
+typedef unsigned char color;
 
 // klasa pixel rgb przechowywac bedzie kolory w formacie rgb
 

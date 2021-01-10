@@ -66,5 +66,5 @@ unsigned long ppm::count_colors() {
 unsigned long ppm::count_pixels() { return pixels_.size(); }
 
 pixelRGB &ppm::operator()(unsigned x, unsigned y) {
-  return pixels_.at(x + y * size_y_);
+  return pixels_.at(x + y * size_x_);
 }

@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include "debug.h"
-typedef char color;
+typedef unsigned char color;
 
 // klasa bazowa dla rewszty pixeli 
 
