@@ -14,6 +14,7 @@ public:
     pixelRGB() = delete;
     pixelRGB(color r, color g, color b): r(r), g(g), b(b) {}
     void set();
+    virtual ~pixelRGB(){};
     virtual color R() { return r; }
     virtual color G() { return g; }
     virtual color B() { return b; }
