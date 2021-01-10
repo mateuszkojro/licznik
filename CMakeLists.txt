@@ -11,6 +11,7 @@ include_directories(
   lib/Csv
   lib/Visualizer
   lib/ppm
+  lib/debug
   /usr/include
 )
 
@@ -24,6 +25,11 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 arch=native")
 add_library(
   Csv STATIC
   lib/Csv/Csv.cpp
+)
+
+add_library(
+  debug STATIC
+  lib/debug/debug.cpp
 )
 
 add_library(
