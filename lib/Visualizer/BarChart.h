@@ -4,10 +4,11 @@
 #include "Visualizer.h"
 #include <string>
 
-class BarChart : Visualizer {
+class BarChart : public Visualizer {
 public:
   virtual void export_to_ppm(const std::string&) override;
 private:
+
 };
 
 #endif

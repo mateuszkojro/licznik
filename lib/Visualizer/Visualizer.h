@@ -16,7 +16,7 @@ public:
   virtual void export_to_ppm(const std::string &) = 0;
   virtual void show() = 0;
 
-private:
+protected:
   Csv data_;
 };
 
