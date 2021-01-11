@@ -15,7 +15,7 @@ public:
   void create(const std::string &);
   std::unordered_map<Type, unsigned> get_count() { return data_; }
   Csv export_to_csv();
-  Csv export_to_csv(std::string (*transformer)(Type));
+  Csv export_to_csv(std::wstring (*transformer)(Type));
 
 private:
   std::unordered_map<Type, unsigned> data_;
@@ -23,12 +23,13 @@ private:
 
 //@FIXME what_should_create_do?
 template <class Type> void FreqCounter<Type>::create(const std::string &path) {
-  std::fstream file;
+  std::wfstream file;
   file.open(path, std::ios::in);
 
   while (file.good()) {
     Type temp;
     file >> temp;
+    std::wcout << temp << std::endl;
     this->add_data(temp);
   }
 }
@@ -43,25 +44,25 @@ template <class Type> Csv FreqCounter<Type>::export_to_csv() {
   Config config;
   config.number_of_columns = 2;
 
-  std::vector<std::string> converted;
+  std::vector<std::wstring> converted;
 
   for (auto &field : data_) {
     converted.push_back(field.first);
-    converted.push_back(std::to_string(field.second));
+    converted.push_back(std::to_wstring(field.second));
   }
   return Csv(converted, config);
 }
 
 template <class Type>
-Csv FreqCounter<Type>::export_to_csv(std::string (*transformer)(Type)) {
+Csv FreqCounter<Type>::export_to_csv(std::wstring (*transformer)(Type)) {
   Config config;
   config.number_of_columns = 2;
 
-  std::vector<std::string> converted;
+  std::vector<std::wstring> converted;
 
   for (auto &field : data_) {
     converted.push_back(transformer(field.first));
-    converted.push_back(std::to_string(field.second));
+    converted.push_back(std::to_wstring(field.second));
   }
 
   return Csv(converted, config);

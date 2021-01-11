@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-Csv::Csv(std::vector<std::string> data, Config config) {
+Csv::Csv(std::vector<std::wstring> data, Config config) {
   config_ = config;
   data_ = data;
   config_ = config;
@@ -14,15 +14,14 @@ Csv::Csv(std::vector<std::string> data, Config config) {
 
 void Csv::export_csv(const std::string &path) {
 
-  std::fstream file;
+  std::wfstream file;
   file.open(path, std::ios::out);
 
   // pozwala nam uniknac wielokrotnego sprawdzania w petli ustawien
-  std::string maybe_quote = (config_.has_quotes) ? "\"" : "";
+  std::wstring maybe_quote = (config_.has_quotes) ? (const wchar_t*)"\"" : (const wchar_t*)"";
 
   for (unsigned i = 0; i < data_.size(); i++) {
 
-    std::clog << data_[i] << "\n";
     // zapisujemy pole do pliku
     file << maybe_quote << data_[i] << maybe_quote;
 
@@ -43,10 +42,10 @@ void Csv::export_csv(const std::string &path) {
 
 void Csv::read_csv(const std::string &path) {
 
-  std::fstream file;
+  std::wfstream file;
   file.open(path, std::ios::in);
 
-  std::string value;
+  std::wstring value;
   int i = 0;
   while (file.good()) {
     // getline przyjmuje ',' jako separator kolejnych pol
@@ -54,7 +53,7 @@ void Csv::read_csv(const std::string &path) {
     data_.push_back(value);
     bool is_last_element_on_line = i % config_.number_of_columns;
     if (is_last_element_on_line) {
-      char trash;
+      wchar_t trash;
       file >> trash;
       i = 0;
     }
@@ -62,7 +61,7 @@ void Csv::read_csv(const std::string &path) {
   }
 }
 
-std::string &Csv::operator()(unsigned column, unsigned row) {
+std::wstring &Csv::operator()(unsigned column, unsigned row) {
   // @vstd::vector.at() sprawdza za nas czy adres jest w zakresie jezeli
   // nie wyrzuca std::out_of_range rownanie dostepu pozwala nam symulowac
   // istnienie tablicy 2 wymiarowej
@@ -70,7 +69,7 @@ std::string &Csv::operator()(unsigned column, unsigned row) {
 
 }
 
-std::vector<std::string> Csv::get_data() { return data_; }
+std::vector<std::wstring> Csv::get_data() { return data_; }
 
 unsigned Csv::number_of_columns() { return config_.number_of_columns; }
 

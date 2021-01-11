@@ -36,7 +36,7 @@ ppm::ppm(unsigned size_x, unsigned size_y, pixelRGB background_color)
 }
 
 void ppm::save_to_file(const std::string &path) {
-  std::fstream file;
+  std::wfstream file;
   file.open(path, std::ios::out);
 
   file << "P3" << '\n';
@@ -44,9 +44,9 @@ void ppm::save_to_file(const std::string &path) {
   file << color_depth_ << '\n';
 
   for (auto &pixel : pixels_) {
-    file << std::to_string(pixel.R()) << '\t';
-    file << std::to_string(pixel.G()) << '\t';
-    file << std::to_string(pixel.B()) << '\t';
+    file << std::to_wstring(pixel.R()) << '\t';
+    file << std::to_wstring(pixel.G()) << '\t';
+    file << std::to_wstring(pixel.B()) << '\t';
   }
 }
 

@@ -11,7 +11,7 @@
 
 //@TODO zajac sie headerami 
 struct Config {
-  char separator = ',';
+  wchar_t separator = (wchar_t)',';
   bool has_headers = false;
   bool has_quotes = false;
   unsigned number_of_columns = 0;
@@ -23,7 +23,7 @@ class Csv {
 public:
   Csv() {} ;
   //@TODO konstruktor from file? Csv()
-  Csv(std::vector<std::string>, Config);
+  Csv(std::vector<std::wstring>, Config);
 
   //@TODO moze byc ciezko z wzgledu na rozny zapis roznych obiektow ale
   // moglibymsy brac func interpretujaca string do danego obiektu that would be
@@ -36,13 +36,13 @@ public:
   unsigned number_of_columns();
   unsigned number_of_rows();
 
-  std::vector<std::string> get_data();
+  std::vector<std::wstring> get_data();
 
-  std::string &operator()(unsigned, unsigned);
+  std::wstring &operator()(unsigned, unsigned);
 
 private:
   Config config_;
-  std::vector<std::string> data_;
+  std::vector<std::wstring> data_;
 };
 
 #endif
