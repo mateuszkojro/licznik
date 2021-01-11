@@ -21,7 +21,7 @@ struct Config {
 class Csv {
 
 public:
-  Csv() = delete;
+  Csv() {} ;
   //@TODO konstruktor from file? Csv()
   Csv(std::vector<std::string>, Config);
 

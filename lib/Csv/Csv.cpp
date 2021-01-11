@@ -50,8 +50,7 @@ void Csv::read_csv(const std::string &path) {
   int i = 0;
   while (file.good()) {
     // getline przyjmuje ',' jako separator kolejnych pol
-    getline(file, value, config_.separator);
-    std::clog << "reading: " << value << "\n";
+    std::getline(file, value, config_.separator);
     data_.push_back(value);
     bool is_last_element_on_line = i % config_.number_of_columns;
     if (is_last_element_on_line) {
@@ -63,11 +62,12 @@ void Csv::read_csv(const std::string &path) {
   }
 }
 
-std::string &Csv::operator()(unsigned row, unsigned column) {
+std::string &Csv::operator()(unsigned column, unsigned row) {
   // @vstd::vector.at() sprawdza za nas czy adres jest w zakresie jezeli
   // nie wyrzuca std::out_of_range rownanie dostepu pozwala nam symulowac
   // istnienie tablicy 2 wymiarowej
   return data_.at(column + row * config_.number_of_columns);
+
 }
 
 std::vector<std::string> Csv::get_data() { return data_; }
