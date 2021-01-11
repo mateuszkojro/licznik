@@ -10,6 +10,8 @@
 #include <cstdio>
 #include <fstream>
 #include <iostream>
+#include <ostream>
+#include <random>
 #include <string>
 
 typedef pixelRGB color;
@@ -20,47 +22,98 @@ typedef pixelRGB color;
 namespace std {
 std::wstring to_wstring(wchar_t znak) { return std::wstring(znak, 1); }
 std::wstring to_wstring(pixelRGB pixel) {
-  return (const wchar_t *)"R" + to_wstring(pixel.R()) + (const wchar_t *)"G" +
-         to_wstring(pixel.G()) + (const wchar_t *)"B" + to_wstring(pixel.B());
+  return L"R" + to_wstring(pixel.R()) + L"G" + to_wstring(pixel.G()) + L"B" +
+         to_wstring(pixel.B());
 }
+std::wstring to_wstring(std::wstring text) { return text; }
 
 } // namespace std
 
-int main(int, char **) {
+bool operator==(std::string a, std::string b) {
+  std::clog << "my ==" << std::endl;
+  if (a.size() != b.size())
+    return false;
+  for (unsigned i = 0; i < a.size(); i++) {
+    if (a[i] != b[i])
+      return false;
+  }
+  return true;
+}
 
-  FreqCounter<wchar_t> licznik_znaki;
-  FreqCounter<std::wstring> licznik_slowa;
+template <class Type> void maybe_export_csv(bool flag, Type data) {
+  if (flag) {
+    std::clog << "Genearting csv please wait" << std::endl;
+    Csv csv = data.export_to_csv(std::to_wstring);
+    csv.export_csv("out.csv");
+    std::clog << "Done" << std::endl;
+  }
+}
 
-  FreqCounter<pixelRGB> licznik_color;
+template <class Type> void maybe_export_ppm(bool flag, Type data) {
+  if (flag) {
+    std::clog << "Genearting ppm please wait" << std::endl;
+    Csv csv = data.export_to_csv(std::to_wstring);
+    BarChart chart(csv);
+    chart.export_to_ppm(2000, 2000,
+                        "out.ppm");
+    std::clog << "Done" << std::endl;
+  }
+}
 
-  licznik_znaki.create("../files/test.txt");
-  licznik_slowa.create("../files/test.txt");
-  ppm obraz("../files/lena.ppm");
+int main(int argc, char **argv) {
 
-  for (auto pixel : obraz.get_pixels()) {
-    licznik_color.add_data(pixel);
+  bool bar_flag = false;
+  bool csv_flag = false;
+  // bool show_flag;
+
+  for (int i = 1; i < argc + 1; i++) {
+
+    bar_flag = (argv[i] == (std::string) "--bar" ? true : bar_flag);
+    csv_flag = (argv[i] == (std::string) "--csv" ? true : csv_flag);
+    // sho_flag = (argv[i] == (std::string) "--bar");
+
+    if (argv[i] == (std::string) "--chars") {
+      FreqCounter<wchar_t> licznik;
+      licznik.create(argv[i + 1]);
+      maybe_export_csv(csv_flag, licznik);
+      maybe_export_ppm(bar_flag, licznik);
+      return 0;
+    }
+    if (argv[i] == (std::string) "--colors") {
+      FreqCounter<pixelRGB> licznik;
+      licznik.create(argv[i + 1]);
+      maybe_export_csv(csv_flag, licznik);
+      maybe_export_ppm(bar_flag, licznik);
+      return 0;
+    }
+    if (argv[i] == (std::string) "--numbers") {
+      FreqCounter<int> licznik;
+      licznik.create(argv[i + 1]);
+      maybe_export_csv(csv_flag, licznik);
+      maybe_export_ppm(bar_flag, licznik);
+      return 0;
+    }
+    if (argv[i] == (std::string) "--words") {
+      FreqCounter<std::wstring> licznik;
+      licznik.create(argv[i + 1]);
+      maybe_export_csv(csv_flag, licznik);
+      maybe_export_ppm(bar_flag, licznik);
+      return 0;
+    }
+    if (argv[i] == (std::string) "--random") {
+      FreqCounter<int> licznik;
+      std::default_random_engine generator;
+      std::uniform_int_distribution<int> distribution(1, 1000);
+      for (int i = 0; i < 1000000; i++) {
+        licznik.add_data(distribution(generator));
+      }
+      maybe_export_csv(csv_flag, licznik);
+      maybe_export_ppm(bar_flag, licznik);
+      return 0;
+    }
   }
 
-  std::cout << licznik_znaki.get_count().size() << std::endl;
-  Csv csv_znaki = licznik_znaki.export_to_csv(std::to_wstring);
-
-  std::cout << licznik_slowa.get_count().size() << std::endl;
-  Csv csv_slowa = licznik_slowa.export_to_csv();
-
-  std::cout << licznik_color.get_count().size() << std::endl;
-  Csv csv_lena = licznik_color.export_to_csv(std::to_wstring);
-
-  csv_slowa.export_csv("csv_slowa.csv");
-  csv_znaki.export_csv("csv_litery.csv");
-  //csv_lena.export_csv("csv_lena.csv");
-
-  BarChart chart_slowa(csv_slowa);
-  //BarChart chart_lena(csv_lena);
-  BarChart chart_znaki(csv_znaki);
-
-  chart_znaki.export_to_ppm(1024, 720, "chart_znaki.ppm");
-  //chart_lena.export_to_ppm(csv_lena.number_of_rows(), 720, "chart_lena.ppm");
-  chart_slowa.export_to_ppm(1024, 720, "chart_slowa.ppm");
+  std::cout << "To jest help" << std::endl;
 
   return 0;
 }

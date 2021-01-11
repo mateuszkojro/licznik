@@ -18,7 +18,7 @@ void Csv::export_csv(const std::string &path) {
   file.open(path, std::ios::out);
 
   // pozwala nam uniknac wielokrotnego sprawdzania w petli ustawien
-  std::wstring maybe_quote = (config_.has_quotes) ? (const wchar_t*)"\"" : (const wchar_t*)"";
+  std::wstring maybe_quote = (config_.has_quotes) ? std::wstring(L"\"",1) : std::wstring(L"",0);
 
   for (unsigned i = 0; i < data_.size(); i++) {
 
@@ -30,7 +30,7 @@ void Csv::export_csv(const std::string &path) {
     // w standardowym pliku CSV nie powinno byc przecinka po ostatnim elemencie
     bool is_last_element = i == data_.size() - 1;
     if (!is_last_element) {
-      file << ',';
+      file << L','; //config_.separator;
     }
 
     // standard pliow CSV wymaga braku znaku konca lini po ostatnim rzedzie

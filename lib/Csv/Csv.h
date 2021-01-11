@@ -11,7 +11,7 @@
 
 //@TODO zajac sie headerami 
 struct Config {
-  wchar_t separator = (wchar_t)',';
+  wchar_t separator = L',';
   bool has_headers = false;
   bool has_quotes = false;
   unsigned number_of_columns = 0;
