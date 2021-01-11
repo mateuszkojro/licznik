@@ -2,6 +2,7 @@
 #include "obraz.h"
 #include "pixelRGB.h"
 #include "ppm.h"
+#include <ostream>
 #include <string>
 
 //@FIXME gdzie w sumie wsadzic ta fuinc
@@ -20,20 +21,16 @@ void BarChart::export_to_ppm(unsigned size_x, unsigned size_y,
   ppm obraz(size_x, size_y, pixelRGB(255, 255, 255));
 
   unsigned max = 0;
-  for (unsigned col = 0; col < data_.number_of_columns(); col++) {
-    for (unsigned row = 0; row < data_.number_of_rows(); row++) {
-      max = std::stol(data_(col, row)) > max ? std::stol(data_(col, row)) : max;
-    }
+  for (unsigned row = 0; row < data_.number_of_rows(); row++) {
+    max = std::stol(data_(1, row)) > max ? std::stol(data_(1, row)) : max;
   }
 
-  unsigned skala_x = (unsigned)size_x / (unsigned)data_.number_of_columns();
-  unsigned skala_y = (unsigned)size_y / max;
+  unsigned skala_x = (unsigned)size_x / (unsigned)data_.number_of_rows();
+  unsigned skala_y = (unsigned)size_y / (unsigned)max;
 
-  for (unsigned col = 0; col < data_.number_of_columns(); col++) {
-    for (unsigned row = 0; row < data_.number_of_rows(); row++) {
-      draw_rect(obraz, col * skala_x, std::stol(data_(col, row)) * skala_y,
-                skala_x, skala_y, pixelRGB(255, 0, 0));
-    }
+  for (unsigned row = 0; row < data_.number_of_rows(); row++) {
+    draw_rect(obraz, row * skala_x, 0, skala_x,
+              std::stol(data_(1, row)) * skala_y, pixelRGB(255, 0, 0));
   }
 
   obraz.save_to_file(path);
