@@ -44,9 +44,9 @@ void ppm::save_to_file(const std::string &path) {
   file << color_depth_ << '\n';
 
   for (auto &pixel : pixels_) {
-    file << pixel.R() << '\t';
-    file << pixel.G() << '\t';
-    file << pixel.B() << '\t';
+    file << std::to_string(pixel.R()) << '\t';
+    file << std::to_string(pixel.G()) << '\t';
+    file << std::to_string(pixel.B()) << '\t';
   }
 }
 
