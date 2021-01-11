@@ -1,7 +1,9 @@
 #ifndef FREQ_COUNTER_H
 #define FREQ_COUNTER_H
 #include "Csv.h"
+#include "debug.h"
 #include <fstream>
+#include <numeric>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -11,7 +13,7 @@ template <class Type> class FreqCounter {
 public:
   void add_data(Type);
   void create(const std::string &);
-  std::unordered_map<Type, unsigned> get_count();
+  std::unordered_map<Type, unsigned> get_count() { return data_; }
   Csv export_to_csv();
   Csv export_to_csv(std::string (*transformer)(Type));
 
@@ -26,12 +28,12 @@ template <class Type> void FreqCounter<Type>::create(const std::string &path) {
 
   while (file.good()) {
     Type temp;
+    file >> temp;
     this->add_data(temp);
   }
 }
 
 template <class Type> void FreqCounter<Type>::add_data(Type new_data) {
-  data_.get(new_data);
   // powinienem sprawdzic czy pusty -> 0 jezeli nie ++ ale domyslnie
   // przy tworzeniu jest 0
   ++data_[new_data];
@@ -44,9 +46,10 @@ template <class Type> Csv FreqCounter<Type>::export_to_csv() {
   std::vector<std::string> converted;
 
   for (auto &field : data_) {
-    converted.push_back(std::to_string(field.first));
-    converted.push_back(field.second);
+    converted.push_back(field.first);
+    converted.push_back(std::to_string(field.second));
   }
+  return Csv(converted, config);
 }
 
 template <class Type>
@@ -58,8 +61,10 @@ Csv FreqCounter<Type>::export_to_csv(std::string (*transformer)(Type)) {
 
   for (auto &field : data_) {
     converted.push_back(transformer(field.first));
-    converted.push_back(field.second);
+    converted.push_back(std::to_string(field.second));
   }
+
+  return Csv(converted, config);
 }
 
 #endif

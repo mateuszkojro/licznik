@@ -20,7 +20,7 @@ enable_testing()
 set(CMAKE_CXX_FLAGS "-Wpedantic -g -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 arch=native")
 
-#add_compile_definitions(DEBUG)
+add_compile_definitions(DEBUG)
 
 add_library(
   Csv STATIC
