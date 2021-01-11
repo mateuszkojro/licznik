@@ -23,7 +23,9 @@ void Csv::export_csv(const std::string &path) {
   for (unsigned i = 0; i < data_.size(); i++) {
 
     // zapisujemy pole do pliku
-    file << maybe_quote << data_[i] << maybe_quote;
+    file << maybe_quote; 
+    file << data_[i]; 
+    file << maybe_quote;
 
     // w standardowym pliku CSV nie powinno byc przecinka po ostatnim elemencie
     bool is_last_element = i == data_.size() - 1;

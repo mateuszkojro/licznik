@@ -29,7 +29,6 @@ template <class Type> void FreqCounter<Type>::create(const std::string &path) {
   while (file.good()) {
     Type temp;
     file >> temp;
-    std::wcout << temp << std::endl;
     this->add_data(temp);
   }
 }
@@ -43,6 +42,7 @@ template <class Type> void FreqCounter<Type>::add_data(Type new_data) {
 template <class Type> Csv FreqCounter<Type>::export_to_csv() {
   Config config;
   config.number_of_columns = 2;
+  //config.has_quotes = true;
 
   std::vector<std::wstring> converted;
 

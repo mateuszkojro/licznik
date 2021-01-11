@@ -7,14 +7,14 @@ public:
   pixelGrayscale(int color):pixel(), g(color) {}
     pixelGrayscale() = delete;
     void set();
-    virtual color Color() { return g; }
+    virtual Color get_color() { return g; }
 
     // jezeli |X| to moc zbioru X i y = a|X|^2 + b|X| + c gdzie a,b,c \in X
     // to y jednoznacznie okresla punkt w 3-w przestrzeni kolorow
     inline unsigned hash() override { return (256 * 256 * g) + (256 * g) + g; }
 
 protected:
-    color g;
+    Color g;
 };
 
 #endif
