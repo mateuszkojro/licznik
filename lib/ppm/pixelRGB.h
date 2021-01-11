@@ -2,29 +2,42 @@
 #define PIXELRGB_H
 
 #include "pixel.h"
+#include <unordered_map>
 
 // TODO: wyjebac for production
-typedef unsigned char color;
+typedef unsigned char Color;
 
 // klasa pixel rgb przechowywac bedzie kolory w formacie rgb
-
-class pixelRGB  
-{
+class pixelRGB {
 public:
-    pixelRGB() = delete;
-    pixelRGB(color r, color g, color b): r(r), g(g), b(b) {}
-    void set();
-    virtual ~pixelRGB(){};
-    virtual color R() { return r; }
-    virtual color G() { return g; }
-    virtual color B() { return b; }
+  pixelRGB(){}; //= delete;
+  pixelRGB(Color r, Color g, Color b) : r(r), g(g), b(b) {}
+  void set();
+  virtual ~pixelRGB(){};
+  virtual Color R() { return r; }
+  virtual Color G() { return g; }
+  virtual Color B() { return b; }
+  operator const int() const { return (256 * 256 * r) + (256 * g) + b; }
+  bool operator==(const pixelRGB &other) {
+    return this->r == other.r && this->g == other.g && this->b == other.b;
+  }
 
-    // jezeli |X| to moc zbioru X i y = a|X|^2 + b|X| + c gdzie a,b,c \in X
-    // to y jednoznacznie okresla punkt w 3-w przestrzeni kolorow
-    inline unsigned hash() { return (256 * 256 * r) + (256 * g) + b; }
+  // jezeli |X| to moc zbioru X i y = a|X|^2 + b|X| + c gdzie a,b,c \in X
+  // to y jednoznacznie okresla punkt w 3-w przestrzeni kolorow
+  inline unsigned hash() { return (256 * 256 * r) + (256 * g) + b; }
 
 protected:
-    color r, g, b;
+  Color r, g, b;
 };
+
+namespace std {
+
+template <> struct hash<pixelRGB> {
+  std::size_t operator()(const pixelRGB &pixel) const {
+    return (const int)pixel;
+  }
+};
+
+} // namespace std
 
 #endif
